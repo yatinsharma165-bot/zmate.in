@@ -57,14 +57,17 @@ header{
   position:sticky;top:0;z-index:999;
   background:#fff;border-bottom:1px solid #e5e5e5;
   height:64px;display:flex;align-items:center;
-  justify-content:center;padding:0 20px;
+  justify-content:space-between;
+  padding:0 20px 0 20px;
   box-shadow:0 2px 12px rgba(0,0,0,.07);
+  gap:12px;
 }
 nav{
   display:flex;align-items:center;
   gap:clamp(12px,3vw,44px);
-  width:100%;max-width:860px;
+  flex:1;
   justify-content:center;
+  min-width:0;
 }
 nav a{
   font-family:'Nunito',sans-serif;
@@ -93,6 +96,27 @@ nav a:hover{color:var(--blue)}
   font-weight:800;color:#1a1bc0;
 }
 
+.profile-link{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:1px;
+  text-decoration:none;
+  flex-shrink:0;
+  cursor:pointer;
+  line-height:1;
+}
+.profile-label{
+  font-family:'Nunito',sans-serif;
+  font-size:9px;
+  font-weight:700;
+  color:#222;
+  white-space:nowrap;
+}
+.profile-link:hover .profile-label{
+  color:var(--blue);
+}
 /* ═══════════════════════════════════════
    HERO
 ═══════════════════════════════════════ */
@@ -597,8 +621,16 @@ footer{
     <a href="#why-us">Why us?</a>
     <a href="#faqs">FAQs</a>
   </nav>
-</header>
 
+  <a href="#profile" class="profile-link">
+    <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+      <circle cx="12" cy="12" r="12" fill="#E8EEFE"/>
+      <circle cx="12" cy="9" r="4" fill="#4285F4"/>
+      <path d="M4 20c0-4 3.6-6 8-6s8 2 8 6" fill="#4285F4"/>
+    </svg>
+    <span class="profile-label">Profile</span>
+  </a>
+</header>
 <!-- ════════════ HERO ════════════ -->
 <section id="home">
   <h1 class="hero-title">INDIA'S FIRST<br><span class="best">BEST</span> SERVICE PLATFORM</h1>

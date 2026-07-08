@@ -7,11 +7,11 @@
 <style>
   :root{
     --border-blue:#2B2DE8;
-    --accent:#f5a500;
-    --accent-dark:#f5a500;
+    --accent:#eeab7c;
+    --accent-dark:#e2935c;
     --text-dark:#2b2b33;
     --text-muted:#8a8a94;
-    --white:#ffffff;
+    --cream:#faf3e9;
     --card:#ffffff;
     --field-border:#e4e1e6;
     --header-h:64px;
@@ -23,7 +23,7 @@
   body{
     margin:0;
     font-family:'Segoe UI', system-ui, -apple-system, Roboto, Helvetica, Arial, sans-serif;
-    background:var(--white);
+    background:var(--cream);
     color:var(--text-dark);
     min-height:100vh;
   }
@@ -47,7 +47,7 @@
   }
 
   header.site-header .logo-wrap img{
-    height:75px;
+    height:38px;
     width:auto;
     display:block;
     object-fit:contain;
@@ -101,7 +101,7 @@
     border:none;
     font-size:14px;
     font-weight:600;
-    color:#f5a500;
+    color:#7d7b85;
     cursor:pointer;
     transition:background .2s ease, color .2s ease;
     -webkit-tap-highlight-color:transparent;
@@ -111,7 +111,7 @@
 
   .tab-btn.active{
     background:#ffffff;
-    color:#f5a500;
+    color:var(--accent-dark);
   }
 
   /* Sliding viewport */
@@ -177,7 +177,7 @@
   }
 
   .input-wrap:focus-within{
-    border-color:var(--accent);
+    border-color:var(--accent-dark);
     box-shadow:0 0 0 3px rgba(238,171,124,0.25);
   }
 
@@ -253,12 +253,12 @@
     margin-top:2px;
     width:15px;
     height:15px;
-    accent-color:#f5a500;
+    accent-color:var(--accent-dark);
     flex-shrink:0;
   }
 
   .agree-row a{
-    color:#f5a500;
+    color:var(--accent-dark);
     text-decoration:none;
     font-weight:600;
   }
@@ -296,12 +296,83 @@
   }
 
   .signin-row a{
-    color:#f5a500;
+    color:var(--accent-dark);
     font-weight:700;
     text-decoration:none;
   }
 
   .signin-row a:hover{ text-decoration:underline; }
+
+  /* ===== Status / error messages ===== */
+  .form-msg{
+    font-size:13px;
+    text-align:center;
+    margin:2px 0 14px;
+    display:none;
+    border-radius:8px;
+    padding:9px 10px;
+  }
+
+  .form-msg.show{ display:block; }
+
+  .form-msg.error{
+    background:#fdeceb;
+    color:#c8402c;
+  }
+
+  .form-msg.success{
+    background:#eaf7ee;
+    color:#22884a;
+  }
+
+  /* ===== OTP section ===== */
+  .otp-section{
+    display:none;
+    margin-top:4px;
+  }
+
+  .otp-section.show{ display:block; }
+
+  .otp-hint{
+    font-size:12.5px;
+    color:var(--text-muted);
+    text-align:center;
+    margin:0 0 12px;
+  }
+
+  .resend-row{
+    text-align:center;
+    font-size:12.5px;
+    color:var(--text-muted);
+    margin-top:10px;
+  }
+
+  .resend-row button{
+    background:none;
+    border:none;
+    color:var(--accent-dark);
+    font-weight:700;
+    cursor:pointer;
+    font-size:12.5px;
+    padding:0;
+  }
+
+  .resend-row button:disabled{
+    color:#c9c7cf;
+    cursor:not-allowed;
+  }
+
+  .submit-btn:disabled{
+    background:#f0c8a9;
+    cursor:not-allowed;
+  }
+
+  .otp-code-input input{
+    letter-spacing:6px;
+    font-size:18px;
+    font-weight:700;
+    text-align:center;
+  }
 
   input[type="date"]::-webkit-calendar-picker-indicator{
     cursor:pointer;
@@ -313,8 +384,6 @@
   }
 </style>
 </head>
-<script type="module" src="firebase.js"></script>
-
 <body>
 
 <header class="site-header">
@@ -355,7 +424,7 @@
               <span class="icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
               </span>
-              <input type="text" placeholder="Enter your full name">
+              <input type="text" id="phoneFullName" placeholder="Enter your full name">
             </div>
           </div>
 
@@ -365,7 +434,7 @@
               <span class="icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
               </span>
-              <input type="date" placeholder="dd-mm-yyyy">
+              <input type="date" id="phoneDob" placeholder="dd-mm-yyyy">
             </div>
           </div>
 
@@ -377,20 +446,38 @@
                 <span class="icon">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
                 </span>
-                <input type="tel" placeholder="7660981230">
+                <input type="tel" id="phoneMobile" placeholder="98765 43210" inputmode="numeric">
               </div>
             </div>
           </div>
 
           <label class="agree-row">
-            <input type="checkbox">
-            <span>I agree to the <a href="term & conditions">Terms</a> and <a href="Privacy & Policy.html">Privacy Policy</a></span>
+            <input type="checkbox" id="phoneAgree">
+            <span>I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a></span>
           </label>
 
-          <button class="submit-btn" type="button">Send OTP</button>
-          <p class="hint-text">We'll send a 6-digit verification code to your phone</p>
-          <p class="signin-row">Already have an account? <a href="sign_in.html">Sign In</a></p>
+          <p class="form-msg" id="phoneMsg"></p>
+
+          <button class="submit-btn" type="button" id="sendOtpBtn">Send OTP</button>
+          <p class="hint-text" id="sendOtpHint">We'll send a 6-digit verification code to your phone</p>
+
+          <div class="otp-section" id="otpSection">
+            <p class="otp-hint">Enter the 6-digit code sent to <span id="otpPhoneDisplay"></span></p>
+            <div class="field otp-code-input">
+              <div class="input-wrap">
+                <input type="text" id="otpCode" placeholder="••••••" maxlength="6" inputmode="numeric">
+              </div>
+            </div>
+            <button class="submit-btn" type="button" id="verifyOtpBtn">Verify &amp; Create Account</button>
+            <div class="resend-row">
+              Didn't get the code? <button type="button" id="resendOtpBtn">Resend OTP</button>
+            </div>
+          </div>
+
+          <p class="signin-row">Already have an account? <a href="signin.html">Sign In</a></p>
         </div>
+
+        <div id="recaptcha-container"></div>
 
         <!-- ===== EMAIL PANEL ===== -->
         <div class="panel" id="panelEmail">
@@ -405,7 +492,7 @@
               <span class="icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg>
               </span>
-              <input type="text" placeholder="Enter your full name">
+              <input type="text" id="emailFullName" placeholder="Enter your full name">
             </div>
           </div>
 
@@ -415,7 +502,7 @@
               <span class="icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
               </span>
-              <input type="date" placeholder="dd-mm-yyyy">
+              <input type="date" id="emailDob" placeholder="dd-mm-yyyy">
             </div>
           </div>
 
@@ -425,7 +512,7 @@
               <span class="icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z" opacity="0"/><path d="M22 6c0-1.1-.9-2-2-2H4a2 2 0 0 0-2 2v12c0 1.1.9 2 2 2h16a2 2 0 0 0 2-2V6zm-2 0-8 5-8-5"/></svg>
               </span>
-              <input type="email" placeholder="your.email@example.com">
+              <input type="email" id="emailAddress" placeholder="your.email@example.com">
             </div>
           </div>
 
@@ -456,12 +543,14 @@
           </div>
 
           <label class="agree-row">
-            <input type="checkbox">
-            <span>I agree to the <a href="term & conditions">Terms</a> and <a href="Privacy & Policy.html">Privacy Policy</a></span>
+            <input type="checkbox" id="emailAgree">
+            <span>I agree to the <a href="#">Terms</a> and <a href="#">Privacy Policy</a></span>
           </label>
 
-          <button class="submit-btn" type="button">Create Account</button>
-          <p class="signin-row">Already have an account? <a href="sign_in.html">Sign In</a></p>
+          <p class="form-msg" id="emailMsg"></p>
+
+          <button class="submit-btn" type="button" id="createAccountBtn">Create Account</button>
+          <p class="signin-row">Already have an account? <a href="signin.html">Sign In</a></p>
         </div>
 
       </div>
@@ -528,6 +617,213 @@
       const input = document.getElementById(btn.dataset.target);
       input.type = input.type === 'password' ? 'text' : 'password';
     });
+  });
+</script>
+
+<!-- ===== Firebase Authentication ===== -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+  import {
+    getAuth,
+    RecaptchaVerifier,
+    signInWithPhoneNumber,
+    createUserWithEmailAndPassword,
+    updateProfile
+  } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyBrXccirfZbk_kiQcNkbiUhxKKuWxkdI9c",
+    authDomain: "zmate-affa0.firebaseapp.com",
+    projectId: "zmate-affa0",
+    storageBucket: "zmate-affa0.firebasestorage.app",
+    messagingSenderId: "976248999877",
+    appId: "1:976248999877:web:2ea572e6bbbfd2cd0b05ac",
+    measurementId: "G-E25ZZLHWR9"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  /* ---------- helpers ---------- */
+  function showMsg(el, text, type){
+    el.textContent = text;
+    el.classList.remove('error', 'success');
+    el.classList.add('show', type);
+  }
+  function hideMsg(el){
+    el.classList.remove('show', 'error', 'success');
+    el.textContent = '';
+  }
+  function setLoading(btn, loading, loadingText, normalText){
+    btn.disabled = loading;
+    btn.textContent = loading ? loadingText : normalText;
+  }
+  function friendlyError(err){
+    const code = err && err.code ? err.code : '';
+    const map = {
+      'auth/invalid-email': 'That email address looks invalid.',
+      'auth/email-already-in-use': 'An account with this email already exists.',
+      'auth/weak-password': 'Password should be at least 6 characters.',
+      'auth/invalid-phone-number': 'That phone number looks invalid.',
+      'auth/too-many-requests': 'Too many attempts. Please try again later.',
+      'auth/invalid-verification-code': 'Incorrect OTP. Please check and try again.',
+      'auth/code-expired': 'This OTP has expired. Please resend a new code.',
+      'auth/network-request-failed': 'Network error. Check your connection and try again.'
+    };
+    return map[code] || (err && err.message ? err.message : 'Something went wrong. Please try again.');
+  }
+
+  /* ---------- element refs ---------- */
+  const phoneMsg = document.getElementById('phoneMsg');
+  const emailMsg = document.getElementById('emailMsg');
+  const sendOtpBtn = document.getElementById('sendOtpBtn');
+  const sendOtpHint = document.getElementById('sendOtpHint');
+  const otpSection = document.getElementById('otpSection');
+  const otpPhoneDisplay = document.getElementById('otpPhoneDisplay');
+  const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+  const resendOtpBtn = document.getElementById('resendOtpBtn');
+  const otpCodeInput = document.getElementById('otpCode');
+  const createAccountBtn = document.getElementById('createAccountBtn');
+
+  let confirmationResult = null;
+  let resendTimer = null;
+
+  /* ---------- invisible reCAPTCHA ---------- */
+  function getRecaptcha(){
+    if(!window.recaptchaVerifier){
+      window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+        size: 'invisible'
+      });
+    }
+    return window.recaptchaVerifier;
+  }
+
+  function startResendCooldown(seconds){
+    let remaining = seconds;
+    resendOtpBtn.disabled = true;
+    resendOtpBtn.textContent = `Resend OTP (${remaining}s)`;
+    clearInterval(resendTimer);
+    resendTimer = setInterval(() => {
+      remaining -= 1;
+      if(remaining <= 0){
+        clearInterval(resendTimer);
+        resendOtpBtn.disabled = false;
+        resendOtpBtn.textContent = 'Resend OTP';
+      } else {
+        resendOtpBtn.textContent = `Resend OTP (${remaining}s)`;
+      }
+    }, 1000);
+  }
+
+  /* ---------- Send OTP ---------- */
+  async function sendOtp(){
+    hideMsg(phoneMsg);
+
+    const fullName = document.getElementById('phoneFullName').value.trim();
+    const dob = document.getElementById('phoneDob').value;
+    const mobileRaw = document.getElementById('phoneMobile').value.trim();
+    const agreed = document.getElementById('phoneAgree').checked;
+
+    if(!fullName){ showMsg(phoneMsg, 'Please enter your full name.', 'error'); return; }
+    if(!dob){ showMsg(phoneMsg, 'Please enter your date of birth.', 'error'); return; }
+
+    const digits = mobileRaw.replace(/\D/g, '');
+    if(digits.length !== 10){ showMsg(phoneMsg, 'Please enter a valid 10-digit mobile number.', 'error'); return; }
+    if(!agreed){ showMsg(phoneMsg, 'Please agree to the Terms and Privacy Policy.', 'error'); return; }
+
+    const e164Phone = `+91${digits}`;
+
+    setLoading(sendOtpBtn, true, 'Sending OTP...', 'Send OTP');
+    try{
+      const appVerifier = getRecaptcha();
+      confirmationResult = await signInWithPhoneNumber(auth, e164Phone, appVerifier);
+      otpPhoneDisplay.textContent = e164Phone;
+      otpSection.classList.add('show');
+      sendOtpHint.style.display = 'none';
+      sendOtpBtn.style.display = 'none';
+      otpCodeInput.value = '';
+      otpCodeInput.focus();
+      startResendCooldown(30);
+      showMsg(phoneMsg, 'OTP sent successfully.', 'success');
+    } catch(err){
+      showMsg(phoneMsg, friendlyError(err), 'error');
+      if(window.recaptchaVerifier){
+        try{ window.recaptchaVerifier.clear(); } catch(e){}
+        window.recaptchaVerifier = null;
+      }
+    } finally {
+      setLoading(sendOtpBtn, false, 'Sending OTP...', 'Send OTP');
+    }
+  }
+
+  /* ---------- Verify OTP ---------- */
+  async function verifyOtp(){
+    hideMsg(phoneMsg);
+    const code = otpCodeInput.value.trim();
+
+    if(!confirmationResult){ showMsg(phoneMsg, 'Please request a new OTP.', 'error'); return; }
+    if(code.length !== 6){ showMsg(phoneMsg, 'Enter the 6-digit code sent to your phone.', 'error'); return; }
+
+    const fullName = document.getElementById('phoneFullName').value.trim();
+
+    setLoading(verifyOtpBtn, true, 'Verifying...', 'Verify & Create Account');
+    try{
+      const result = await confirmationResult.confirm(code);
+      if(fullName){
+        try{ await updateProfile(result.user, { displayName: fullName }); } catch(e){}
+      }
+      showMsg(phoneMsg, 'Phone verified! Account created successfully.', 'success');
+      setTimeout(() => { window.location.href = 'signin.html'; }, 1200);
+    } catch(err){
+      showMsg(phoneMsg, friendlyError(err), 'error');
+    } finally {
+      setLoading(verifyOtpBtn, false, 'Verifying...', 'Verify & Create Account');
+    }
+  }
+
+  /* ---------- Email / Password signup ---------- */
+  async function createEmailAccount(){
+    hideMsg(emailMsg);
+
+    const fullName = document.getElementById('emailFullName').value.trim();
+    const dob = document.getElementById('emailDob').value;
+    const email = document.getElementById('emailAddress').value.trim();
+    const pw1 = document.getElementById('pw1').value;
+    const pw2 = document.getElementById('pw2').value;
+    const agreed = document.getElementById('emailAgree').checked;
+
+    if(!fullName){ showMsg(emailMsg, 'Please enter your full name.', 'error'); return; }
+    if(!dob){ showMsg(emailMsg, 'Please enter your date of birth.', 'error'); return; }
+    if(!email){ showMsg(emailMsg, 'Please enter your email address.', 'error'); return; }
+    if(pw1.length < 6){ showMsg(emailMsg, 'Password must be at least 6 characters.', 'error'); return; }
+    if(pw1 !== pw2){ showMsg(emailMsg, 'Passwords do not match.', 'error'); return; }
+    if(!agreed){ showMsg(emailMsg, 'Please agree to the Terms and Privacy Policy.', 'error'); return; }
+
+    setLoading(createAccountBtn, true, 'Creating account...', 'Create Account');
+    try{
+      const cred = await createUserWithEmailAndPassword(auth, email, pw1);
+      try{ await updateProfile(cred.user, { displayName: fullName }); } catch(e){}
+      showMsg(emailMsg, 'Account created successfully! Redirecting...', 'success');
+      setTimeout(() => { window.location.href = 'signin.html'; }, 1200);
+    } catch(err){
+      showMsg(emailMsg, friendlyError(err), 'error');
+    } finally {
+      setLoading(createAccountBtn, false, 'Creating account...', 'Create Account');
+    }
+  }
+
+  /* ---------- wire up events ---------- */
+  sendOtpBtn.addEventListener('click', sendOtp);
+  verifyOtpBtn.addEventListener('click', verifyOtp);
+  resendOtpBtn.addEventListener('click', sendOtp);
+  createAccountBtn.addEventListener('click', createEmailAccount);
+
+  otpCodeInput.addEventListener('input', () => {
+    otpCodeInput.value = otpCodeInput.value.replace(/\D/g, '').slice(0, 6);
+  });
+
+  document.getElementById('phoneMobile').addEventListener('input', (e) => {
+    e.target.value = e.target.value.replace(/\D/g, '').slice(0, 10);
   });
 </script>
 

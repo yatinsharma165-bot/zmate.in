@@ -9,17 +9,17 @@
     --header-h: 64px;
     --header-color: #2b2de8;
     --accent: #f5a500;
-    --accent-dark: #f5a500;
+    --accent-dark: #d98e00;
     --text-dark: #1a1a2e;
     --text-muted: #8a8a9a;
     --border: #e8e6f0;
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0;}
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: linear-gradient(135deg, #fdf6ec 0%, #fbeee0 50%, #fdf6ec 100%);
+    background: #ffffff;
     min-height: 100vh;
     overflow-x: hidden;
   }
@@ -230,7 +230,7 @@
   .primary-btn {
     width: 100%;
     border: none;
-    background: linear-gradient(180deg, #f5a500, var(--accent-dark));
+    background: linear-gradient(180deg, #f2ac7d, var(--accent-dark));
     color: #fff;
     font-size: 15px;
     font-weight: 700;
@@ -372,7 +372,7 @@
 
           <button class="primary-btn" onclick="sendOtp()">Send OTP</button>
           <div class="hint">We'll send a 6-digit verification code to your phone</div>
-          <div class="signup-line">Don't have an account? <a href="#">Sign Up</a></div>
+          <div class="signup-line">Don't have an account? <a href="Authentication.html">Sign Up</a></div>
         </div>
 
         <!-- EMAIL PANEL -->
@@ -407,7 +407,7 @@
           </div>
 
           <button class="primary-btn" onclick="signIn()">Sign In</button>
-          <div class="signup-line">Don't have an account? <a href="Authentication">Sign Up</a></div>
+          <div class="signup-line">Don't have an account? <a href="Authentication.htm">Sign Up</a></div>
         </div>
 
       </div>

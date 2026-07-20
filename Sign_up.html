@@ -417,7 +417,7 @@
       const cred = await createUserWithEmailAndPassword(auth, email, pw1);
       try{ await updateProfile(cred.user, { displayName: fullName }); } catch(e){}
       showMsg(emailMsg, 'Account created successfully! Redirecting...', 'success');
-      setTimeout(() => { window.location.href = 'signin.html'; }, 1200);
+      setTimeout(() => { window.location.href = 'index.html'; }, 1200);
     } catch(err){
       showMsg(emailMsg, friendlyError(err), 'error');
     } finally {

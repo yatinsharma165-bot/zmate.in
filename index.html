@@ -413,7 +413,27 @@ nav a:hover{color:var(--blue)}
   text-align:center;
 }
 .step-cap .hl{color:var(--orange)}
+@media (max-width: 640px){
+  .steps{
+    flex-wrap:nowrap;
+    justify-content:flex-start;
+    overflow-x:auto;
+    scroll-snap-type:x mandatory;
+    -webkit-overflow-scrolling:touch;
+    gap:0;
+    padding:0 0 10px;
+    scrollbar-width:none;          
+  }
+  .steps::-webkit-scrollbar{ display:none; }
 
+  .step-wrap{
+    flex:0 0 100%;                 
+    width:100%;
+    max-width:280px;              
+    margin:0 auto;
+    scroll-snap-align:center;
+  }
+}
 /* ═══════════════════════════════════════
    WHY CHOOSE
 ═══════════════════════════════════════ */

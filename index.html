@@ -1080,4 +1080,40 @@ const observer=new IntersectionObserver(entries=>{
 document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
 </script>
 </body>
+<style>
+#zm-wrap{display:none;position:fixed;right:18px;bottom:18px;width:400px;height:640px;max-height:calc(100vh - 36px);border-radius:20px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.28);z-index:99999;background:#fff;animation:zmIn .22s ease-out}
+#zm-wrap iframe{width:100%;height:100%;border:0;display:block}
+#zm-close{position:absolute;top:15px;right:14px;width:36px;height:36px;border:0;border-radius:50%;background:transparent;cursor:pointer;z-index:2}
+@keyframes zmIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+@media(max-width:640px){#zm-wrap{inset:0;width:100%;height:100%;max-height:none;border-radius:0}}
+</style>
+
+<script>
+(function () {
+  /* ====== SIRF YE 2 LINES BADLO ====== */
+  var CHATBOT_URL  = "index.html";
+ /* =================================== */
+
+  var wrap = document.createElement("div");
+  wrap.id = "zm-wrap";
+  wrap.innerHTML = '<iframe title="Zmate Assistant" allow="microphone"></iframe>' +
+                   '<button id="zm-close" aria-label="Close chat"></button>';
+  document.body.appendChild(wrap);
+  var frame = wrap.querySelector("iframe");
+
+  function openChat()  { if (!frame.src) frame.src = CHATBOT_URL; wrap.style.display = "block"; }
+  function closeChat() { wrap.style.display = "none"; }
+
+  document.addEventListener("click", function (e) {
+    if (e.target.closest(ZIYA_SELECTOR)) {
+      e.preventDefault();
+      e.stopImmediatePropagation();   
+      openChat();
+    }
+  }, true);
+
+  wrap.querySelector("#zm-close").onclick = closeChat;
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeChat(); });
+})();
+</script>
   </html>

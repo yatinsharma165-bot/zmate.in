@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Zmate Assistant</title>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--pri:#0A2FFF;--sec:#0A2FFF;--acc:#F5A500;--bg:#FFFFFF;--card:#FFFFFF;--txt:#172033;--mut:#64748B;--bd:#E2E8F0;--soft:#EAEEFF;--user:#0A2FFF;--usertxt:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{background:var(--bg);color:var(--txt);font-family:Manrope,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:15px;line-height:1.45}
+button{font:inherit;color:inherit;cursor:pointer}
+.stage{height:100%;display:flex;align-items:center;justify-content:center}
+.shell{width:100%;height:100%;display:flex;flex-direction:column;background:var(--bg);overflow:hidden}
+@media(min-width:640px){.stage{padding:24px;background:#fff}.shell{max-width:440px;height:min(100%,780px);border:1px solid var(--bd);border-radius:24px;box-shadow:0 10px 30px rgba(15,23,42,.10)}}
+header{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--pri);color:#fff}
+.av{width:42px;height:42px;border-radius:50%;flex:none;border:2px solid rgba(255,255,255,.55)}
+.hd{flex:1;min-width:0}.hd b{display:block;font-size:16px;font-weight:700}
+.on{font-size:12px;opacity:.9;display:flex;align-items:center;gap:5px}.on i{width:8px;height:8px;border-radius:50%;background:var(--acc)}
+.ib{width:36px;height:36px;border-radius:50%;border:0;background:rgba(255,255,255,.16);display:grid;place-items:center;transition:transform .12s,background .2s}
+.ib:hover{background:rgba(255,255,255,.28)}.ib:active{transform:scale(.9)}
+.ib svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+#body{flex:1;overflow-y:auto;padding:14px;scroll-behavior:smooth;overscroll-behavior:contain}
+.wel h1{font-size:20px;margin:2px 0 2px;font-weight:800}.wel p{margin:0 0 12px;color:var(--mut);font-size:13.5px}
+.sec{font-size:13px;font-weight:700;color:var(--pri);margin:14px 0 8px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.svc{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:10px 8px;text-align:left;transition:transform .12s,border-color .2s}
+.svc:hover,.q:hover{border-color:var(--sec)}.svc:active,.q:active,.chip:active,.cta:active,.send:active{transform:scale(.96)}
+.svc .e{font-size:22px;display:block}.svc b{font-size:13.5px;display:block;margin-top:2px}.svc span{font-size:11.5px;color:var(--mut);display:block;line-height:1.25}
+.qs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.q{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:9px 11px;text-align:left;transition:transform .12s,border-color .2s}
+.q b{font-size:13px;display:block}.q span{font-size:11.5px;color:var(--mut);display:block;line-height:1.25}
+.row{display:flex;gap:8px;margin:10px 0;align-items:flex-end;animation:pop .25s ease-out}
+.row.u{justify-content:flex-end}
+.row .av{width:28px;height:28px;border-width:0}
+.col{max-width:84%;display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.bub{padding:9px 13px;border-radius:18px;background:var(--card);border:1px solid var(--bd);border-bottom-left-radius:6px;white-space:pre-line}
+.row.u .bub{background:var(--user);color:var(--usertxt);border-color:var(--user);border-bottom-left-radius:18px;border-bottom-right-radius:6px;font-weight:600}
+.card{background:var(--card);border:1px solid var(--bd);border-left:4px solid var(--sec);border-radius:16px;padding:12px 14px;width:100%}
+.card h3{margin:0 0 6px;font-size:15px}.card p{margin:0 0 6px}
+.card ul{list-style:none;margin:6px 0 0;padding:0}.card li{padding-left:20px;position:relative;margin:2px 0;font-weight:600;font-size:13.5px}
+.card li:before{content:"✓";position:absolute;left:0;color:var(--sec);font-weight:800}
+.locs{display:flex;flex-direction:column;gap:6px;margin-top:6px}
+.loc{display:flex;justify-content:space-between;background:var(--soft);border-radius:12px;padding:8px 11px;font-weight:700;font-size:13.5px}.loc em{font-style:normal;color:var(--pri);font-size:12px}
+.opts{display:flex;flex-wrap:wrap;gap:6px}.opts.used{opacity:.55}
+.chip,.cta{border:1.5px solid var(--sec);background:var(--card);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:700;text-decoration:none;color:var(--txt);transition:transform .12s,background .2s;display:inline-block}
+.chip:hover{background:var(--soft)}
+.cta{background:var(--acc);border-color:var(--acc);color:#172033}
+.err{border-color:#EF4444}
+.dots{display:flex;gap:4px;padding:12px 14px}.dots i{width:7px;height:7px;border-radius:50%;background:var(--mut);animation:b 1s infinite}.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}
+@keyframes b{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+#strip{display:none;gap:6px;overflow-x:auto;padding:8px 12px 0;scrollbar-width:none}#strip .chip{white-space:nowrap;font-size:12.5px;padding:5px 10px}
+footer{padding:8px 12px 6px;border-top:1px solid var(--bd);background:var(--card)}
+form{display:flex;gap:8px;align-items:center}
+.inp{flex:1;display:flex;align-items:center;border:1.5px solid var(--bd);border-radius:999px;padding:0 6px 0 14px;background:var(--bg)}
+.inp:focus-within{border-color:var(--sec)}
+.inp input{flex:1;min-width:0;border:0;background:none;outline:0;padding:10px 0;font:inherit;color:var(--txt)}
+.mic{width:34px;height:34px;border:0;background:none;border-radius:50%;display:grid;place-items:center}.mic.rec{background:#FEE2E2}
+.mic svg{width:19px;height:19px;stroke:var(--mut);fill:none;stroke-width:2;stroke-linecap:round}
+.send{border:0;background:var(--pri);color:#fff;font-weight:800;border-radius:999px;padding:11px 18px;transition:transform .12s;border-bottom:3px solid var(--acc)}
+.note{text-align:center;font-size:11.5px;color:var(--mut);margin:5px 0 0}
+#fab{display:none;position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));width:60px;height:60px;border-radius:50%;border:3px solid var(--pri);padding:0;overflow:hidden;box-shadow:0 6px 16px rgba(0,0,0,.2)}
+#fab svg{width:100%;height:100%;display:block}
+:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<symbol id="zlogo" viewBox="0 0 256 256"><defs><linearGradient id="zbg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a2fff"/><stop offset="1" stop-color="#000"/></linearGradient><clipPath id="zc"><circle cx="128" cy="128" r="124"/></clipPath></defs>
+<circle cx="128" cy="128" r="124" fill="url(#zbg)"/><g clip-path="url(#zc)">
+<path d="M28 256C34 205 76 188 128 188C180 188 222 205 228 256Z" fill="#F5A500"/><path d="M104 190L128 222L152 190Z" fill="#fff" opacity=".9"/>
+<rect x="113" y="168" width="30" height="28" rx="10" fill="#f6c4a3"/>
+<path d="M52 118C44 52 94 28 128 28C170 28 212 56 204 118C204 150 196 176 180 188L76 188C60 176 52 150 52 118Z" fill="#111"/>
+<path d="M198 70C236 64 246 120 222 150C214 128 206 108 192 92Z" fill="#111"/><circle cx="200" cy="82" r="9" fill="#ffd54f"/>
+<ellipse cx="128" cy="116" rx="62" ry="60" fill="#fbd3b5"/><circle cx="66" cy="122" r="9" fill="#fbd3b5"/><circle cx="190" cy="122" r="9" fill="#fbd3b5"/>
+<path d="M64 108C62 62 100 44 130 46C164 46 194 64 192 108C178 94 166 76 146 70C140 88 112 98 64 108Z" fill="#222"/>
+<ellipse cx="104" cy="122" rx="12" ry="14" fill="#fff"/><ellipse cx="152" cy="122" rx="12" ry="14" fill="#fff"/>
+<circle cx="106" cy="124" r="8.5" fill="#2b1b3d"/><circle cx="154" cy="124" r="8.5" fill="#2b1b3d"/>
+<circle cx="109" cy="120" r="3.2" fill="#fff"/><circle cx="157" cy="120" r="3.2" fill="#fff"/><circle cx="103" cy="128" r="1.6" fill="#fff"/><circle cx="151" cy="128" r="1.6" fill="#fff"/>
+<path d="M90 112Q96 104 104 107M166 112Q160 104 152 107" stroke="#2b1b3d" stroke-width="3" fill="none" stroke-linecap="round"/>
+<path d="M92 98Q102 92 114 97M142 97Q154 92 164 98" stroke="#111" stroke-width="3" fill="none" stroke-linecap="round"/>
+<ellipse cx="86" cy="144" rx="10" ry="6" fill="#ff8fa3" opacity=".55"/><ellipse cx="170" cy="144" rx="10" ry="6" fill="#ff8fa3" opacity=".55"/>
+<path d="M127 134Q130 138 126 140" stroke="#e39a7a" stroke-width="2" fill="none" stroke-linecap="round"/>
+<path d="M112 150Q128 166 144 150Q128 156 112 150Z" fill="#c2415d" stroke="#c2415d" stroke-width="3" stroke-linejoin="round"/>
+<path d="M60 118C54 56 98 36 128 36C158 36 202 56 196 118" stroke="#2f3a5f" stroke-width="7" fill="none" stroke-linecap="round"/>
+<rect x="48" y="108" width="20" height="38" rx="10" fill="#2f3a5f"/><rect x="188" y="108" width="20" height="38" rx="10" fill="#2f3a5f"/>
+<circle cx="58" cy="127" r="4" fill="#6ee7d3"/><circle cx="198" cy="127" r="4" fill="#6ee7d3"/>
+<path d="M58 146C60 170 90 172 108 166" stroke="#2f3a5f" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="112" cy="165" r="6" fill="#6ee7d3" stroke="#2f3a5f" stroke-width="3"/>
+</g></symbol></defs></svg>
+
+<div class="stage">
+<main class="shell" id="shell" aria-label="Zmate Assistant">
+  <header>
+    <svg class="av" role="img" aria-label="Zmate Assistant"><use href="#zlogo"/></svg>
+    <div class="hd"><b>Zmate Assistant</b><span class="on"><i></i>Online</span></div>
+    <button class="ib" id="reset" aria-label="New chat"><svg viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 4v7h-7"/></svg></button>
+    <button class="ib" id="min" aria-label="Minimize"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+  </header>
+  <div id="body" role="log" aria-live="polite">
+    <section class="wel" id="wel">
+      <h1>Hi! 👋 How can we help you today?</h1>
+      <p>Ask me about Zmate services, pricing, booking or availability.</p>
+      <div class="sec">Our services</div><div class="grid" id="svcs"></div>
+      <div class="sec">Quick questions</div><div class="qs" id="qs"></div>
+    </section>
+    <div id="chat"></div>
+  </div>
+  <div id="strip"></div>
+  <footer>
+    <form id="f" autocomplete="off">
+      <label class="inp"><input id="t" type="text" placeholder="Ask about services, pricing, booking..." aria-label="Your message" maxlength="300">
+      <button type="button" class="mic" id="mic" aria-label="Voice input"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button></label>
+      <button class="send" type="submit">Send</button>
+    </form>
+    <p class="note">AI responses may contain errors.</p>
+  </footer>
+</main>
+</div>
+<button id="fab" aria-label="Open Zmate Assistant"><svg><use href="#zlogo"/></svg></button>
+
+<script>
+/* ============ 1. KNOWLEDGE BASE (edit here; no UI code needed) ============ */
+const zmateKnowledge = {
+  brand:{name:"Zmate",tagline:"Your Needs, Our Responsibility"},
+  services:[
+    {id:"plumber",name:"Plumber",icon:"🔧",tag:"Need plumbing help?",kw:/plumb|nalka|tap|pipe|leak/,issues:["Tap leakage","Pipe issue","Bathroom plumbing","Water supply","Other"]},
+    {id:"mechanic",name:"Mechanic",icon:"🚗",tag:"Vehicle service?",kw:/mechanic|car\b|bike|vehicle|gaadi/,issues:["Car service","Bike service","Breakdown help","Other"]},
+    {id:"laundry",name:"Laundry",icon:"🧺",tag:"Laundry service",kw:/laundry|wash|kapde|dhobi/,issues:["Regular laundry","Recurring laundry","Other"]},
+    {id:"ironing",name:"Ironing",icon:"👔",tag:"Ironing service",kw:/iron|press|istri/,issues:["Clothes ironing","Recurring ironing","Other"]},
+    {id:"ro",name:"RO Water",icon:"💧",tag:"RO service",kw:/\bro\b|water purif|ro water/,issues:["RO service","Filter issue","Other"]},
+    {id:"electrician",name:"Electrician",icon:"⚡",tag:"Electrical help",kw:/electric|wiring|switch|bijli|fan\b/,issues:["Wiring / switch","Appliance fitting","Power issue","Other"]}
+  ],
+  locations:["Mathura","Aligarh","Greater Noida"],
+  pricing:{
+    en:["Exact pricing depends on your service and job requirements.","Zmate provides a clear quote before you confirm the service."],
+    hi:["Exact price service aur kaam par depend karta hai.","Service confirm karne se pehle Zmate aapko clear quote deta hai."],
+    checks:["No hidden charges","Extra charges, if any, are told in advance"]},
+  booking:{steps:["Pick the service you need.","Contact Zmate on its official WhatsApp.","Zmate connects you with the nearest available Captain — the website says this can happen within 30 minutes.","Review the quote and confirm."],note:"Bookings are subject to availability. Zmate may accept, modify, reschedule or cancel a booking when necessary."},
+  cancellation:{en:"Yes. Zmate currently provides free cancellation with no cancellation charges.",hi:"Haan. Zmate abhi free cancellation deta hai — koi cancellation charge nahi."},
+  recurringServices:{services:["Laundry","Ironing"],frequency:["Daily","Weekly","Monthly"]},
+  trust:["Background-verified Captains","Trained professionals","Quality-focused, safe & secure service","Support for women","24/7 customer support","4.5+ average service rating"],
+  support:{email:"support.Zmate.in@gmail.com",whatsappUrl:"https://wa.me/919458585096"},
+  payment:"Service charges are told before booking confirmation, and any extra charges are communicated in advance. Pay only through Zmate-approved payment methods — never transfer money to an unofficial account.",
+  privacy:"Zmate may collect your name, mobile number, email, service address and booking details you share. It states that personal information is not sold, rented or traded. Limited details may be shared with authorised service partners only when needed for your service.",
+  faq:[]
+};
+/* Future hooks: replace with real APIs. Return null = "no live data". */
+const liveData={ async price(){return null}, async availability(){return null} };
+
+/* ============ 2. CHAT LOGIC (pure: text -> messages) ============ */
+const K=zmateKnowledge, SUP=K.support.email;
+const hinglish=t=>/\b(kitna|kitne|hai|hain|karo|chahiye|mujhe|kya|nahi|mein|kaise|kahan|ka|ki|ke|bhai|karna|hota)\b/.test(t);
+const pick=(o,hi)=>hi&&o.hi?o.hi:o.en;
+const WA=()=>K.support.whatsappUrl?[{l:"💬 Continue on WhatsApp",href:K.support.whatsappUrl,cta:1}]:[];
+const supportOpts=()=>[...WA(),{l:"✉️ Email Support",href:"mailto:"+SUP}];
+const svcOf=t=>K.services.find(s=>s.kw.test(t));
+const serviceList=()=>({text:"Which service do you need help with?",opts:K.services.map(s=>({l:s.icon+" "+s.name,a:"svc:"+s.id}))});
+
+const A={
+  pricing(hi,t){const s=svcOf(t);return [{card:{icon:"💰",title:s?s.name+" pricing":"Service Pricing",lines:pick({en:K.pricing.en.join("\n"),hi:K.pricing.hi.join("\n")},hi).split("\n"),checks:K.pricing.checks},opts:[{l:"Check Service",a:"services",cta:1},{l:"Cancellation",a:"q:cancel"}]}]},
+  availability(hi,t){
+    const want=(t.match(/\b(?:in|at|near|mein|me)\s+([a-z]+(?: [a-z]+)?)/)||[])[1];
+    const listed=K.locations.find(l=>t.includes(l.toLowerCase()));
+    if(listed)return [{card:{icon:"📍",title:listed+" — Available",lines:["Zmate is currently available in "+listed+".","Service availability for a specific job is confirmed by Zmate."]},opts:[{l:"Choose a Service",a:"services",cta:1}]}];
+    if(want&&!/^(my|your|the|any|city|which|what|zmate|india|area|town)\b/.test(want)&&!/^noida/.test(want))return [{text:"Zmate is currently available in Mathura, Aligarh and Greater Noida. "+want.replace(/\b\w/g,c=>c.toUpperCase())+" is not currently listed as an active service location."},{opts:[{l:"Ask Zmate Support",href:"mailto:"+SUP,cta:1},...WA()]}];
+    return [{card:{icon:"📍",title:"Where Zmate is available",locs:K.locations.map(l=>[l,"Available"]),lines:["Not in the list? "+"Other cities are not listed right now."]},opts:[{l:"Ask Zmate Support",href:"mailto:"+SUP,cta:1}]}];
+  },
+  booking(){return [{card:{icon:"📅",title:"How booking works",lines:K.booking.steps.map((s,i)=>(i+1)+". "+s),checks:[]},},{text:K.booking.note,opts:[...WA(),{l:"Pricing",a:"q:pricing"},{l:"Cancellation",a:"q:cancel"}]}]},
+  cancel(hi){return [{card:{icon:"❌",title:"Cancellation",lines:[pick(K.cancellation,hi)]},opts:[{l:"Booking info",a:"q:booking"}]}]},
+  recurring(hi){const r=K.recurringServices;return [{card:{icon:"🔄",title:"Recurring services",lines:[hi?"Haan. Zmate recurring laundry aur ironing support karta hai — daily, weekly ya monthly.":"Yes. Zmate supports recurring "+r.services.join(" and ").toLowerCase()+" services. You can schedule them "+r.frequency.join(", ").toLowerCase().replace(/, (\w+)$/," or $1")+"."]},opts:[{l:"🧺 Laundry",a:"svc:laundry"},{l:"👔 Ironing",a:"svc:ironing"}]}]},
+  trust(){return [{card:{icon:"🛡️",title:"Trust & Safety",lines:["Captains are Zmate's service professionals. Zmate states they are:"],checks:K.trust.slice(0,2).concat(K.trust.slice(2))},opts:[{l:"Contact Support",a:"q:support"}]}]},
+  support(hi){return [{text:(hi?"Zmate support se yahan sampark karein:":"You can reach Zmate support here:")+"\n"+SUP+"\nYou can also message Zmate on its official WhatsApp.",opts:supportOpts()}]},
+  payment(){return [{card:{icon:"💳",title:"Payments",lines:[K.payment]}}]},
+  privacy(){return [{card:{icon:"🔒",title:"Privacy",lines:[K.privacy]}}]},
+  services(){return [{text:"Zmate offers 6 services:",opts:K.services.map(s=>({l:s.icon+" "+s.name,a:"svc:"+s.id}))}]},
+  about(){return [{text:"Zmate — "+K.brand.tagline+".\nIt's a home and on-demand service platform that connects you with trusted professionals called Captains. Live in Mathura, Aligarh and Greater Noida.",opts:[{l:"See services",a:"services"}]}]},
+  greet(hi){return [{text:hi?"Namaste! 👋 Main Zmate Assistant hoon. Services, price, booking ya availability ke baare mein puchiye.":"Hi! 👋 I'm Zmate Assistant. Ask me about services, pricing, booking or availability.",opts:[{l:"See services",a:"services"},{l:"Pricing",a:"q:pricing"}]}]},
+  service(s){state.flow={svc:s.id};return [{text:"Sure! I can help you with "+s.name.toLowerCase()+". What do you need?",opts:s.issues.map(i=>({l:i,a:"issue:"+i}))}]},
+  fallback(hi){return [{text:"I don't have confirmed information for that yet. Please contact Zmate support at "+SUP+".",opts:[{l:"Contact Support",a:"q:support",cta:1},{l:"See services",a:"services"}]}]}
+};
+const INTENTS=[
+  ["pricing",/price|pricing|cost|charge|rate\b|kitna|paisa|paise|fee|quote|kharcha/],
+  ["cancel",/cancel|refund/],
+  ["recurring",/recurr|weekly|daily|monthly|every (day|week|month)|subscription|har (din|hafte|mahine)/],
+  ["booking",/\bbook|how.*(work|order)|process|kaise|appointment|\border\b/],
+  ["availability",/availab|city|cities|location|where|kahan|service in|do you (provide|serve)|\bnoida|delhi|agra|mathura|aligarh/],
+  ["trust",/verif|safe|trust|background|captain|professional|women|rating|secure/],
+  ["support",/contact|support|human|agent|email|phone|call|number|whatsapp|complain/],
+  ["payment",/pay|upi|cash|online payment/],
+  ["privacy",/privacy|personal data|my data|information/],
+  ["about",/what is zmate|who are you|about zmate|zmate kya/],
+  ["services",/services|what do you|offer|kya kya/],
+  ["greet",/^(hi|hello|hey|hii+|namaste|hlo|good (morning|evening))\b/]
+];
+const state={flow:null,hi:false,busy:false};
+
+function finishFlow(city){
+  const f=state.flow||{},s=K.services.find(x=>x.id===f.svc),ok=K.locations.includes(city);
+  state.flow=null;
+  if(!ok)return A.availability(false,"in "+city.toLowerCase());
+  return [{card:{icon:s?s.icon:"✅",title:(s?s.name:"Service")+" — "+city,lines:[
+    (f.issue&&f.issue!=="Other"?f.issue+" in "+city+": ":"")+"Zmate is currently available in "+city+".",
+    "Exact price depends on the job. You'll get a clear quote before you confirm.",
+    "Zmate connects you with the nearest available Captain via its official WhatsApp. Bookings are subject to availability."],checks:["No hidden charges"]},
+    opts:[...WA(),{l:"Pricing",a:"q:pricing"},{l:"Cancellation",a:"q:cancel"},{l:"Contact Support",a:"q:support"}]}];
+}
+async function route(raw){
+  const t=raw.toLowerCase().trim();state.hi=hinglish(t);
+  if(state.flow&&state.flow.issue&&!state.flow.city){const c=K.locations.find(l=>t.includes(l.toLowerCase()));if(c)return finishFlow(c);}
+  const s=svcOf(t),hit=INTENTS.find(([,re])=>re.test(t));
+  if(hit&&!(hit[0]==="services"&&s))return A[hit[0]](state.hi,t);
+  if(s)return A.service(s);
+  return A.fallback(state.hi);
+}
+async function action(a){
+  if(a==="services")return [serviceList()];
+  if(a.startsWith("svc:"))return A.service(K.services.find(s=>s.id===a.slice(4)));
+  if(a.startsWith("issue:")){state.flow=state.flow||{};state.flow.issue=a.slice(6);return [{text:"Which city are you in?",opts:[...K.locations,"Other"].map(c=>({l:c,a:"city:"+c}))}]}
+  if(a.startsWith("city:")){const c=a.slice(5);return c==="Other"?(state.flow=null,[{text:"Zmate is currently available in Mathura, Aligarh and Greater Noida.",opts:[{l:"Ask Zmate Support",href:"mailto:"+SUP,cta:1}]}]):finishFlow(c)}
+  if(a.startsWith("q:"))return A[{pricing:"pricing",availability:"availability",booking:"booking",recurring:"recurring",cancel:"cancel",trust:"trust",support:"support"}[a.slice(2)]](state.hi,"");
+}
+
+/* ============ 3. UI ============ */
+const $=s=>document.querySelector(s),body=$("#body"),chat=$("#chat");
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const QUICK=[["💰","Pricing","How much does it cost?","pricing"],["📍","Availability","Is Zmate available in my city?","availability"],["📅","Booking","How do I book?","booking"],["🔄","Recurring","Can I schedule recurring service?","recurring"],["❌","Cancellation","Can I cancel my booking?","cancel"],["🛡️","Trust & Safety","Are Captains verified?","trust"]];
+$("#svcs").innerHTML=K.services.map(s=>`<button class="svc" data-a="svc:${s.id}" data-l="${s.icon} ${s.name}"><span class="e">${s.icon}</span><b>${s.name}</b><span>${s.tag}</span></button>`).join("");
+$("#qs").innerHTML=QUICK.map(q=>`<button class="q" data-a="q:${q[3]}" data-l="${q[2]}"><b>${q[0]} ${q[1]}</b><span>${q[2]}</span></button>`).join("");
+$("#strip").innerHTML=QUICK.map(q=>`<button class="chip" data-a="q:${q[3]}" data-l="${q[2]}">${q[0]} ${q[1]}</button>`).join("")+`<button class="chip" data-a="services" data-l="Show services">🧰 Services</button>`;
+
+function scroll(){body.scrollTo({top:body.scrollHeight})}
+function start(){$("#wel").style.display="none";$("#strip").style.display="flex"}
+function addUser(t){start();chat.insertAdjacentHTML("beforeend",`<div class="row u"><div class="col" style="align-items:flex-end"><div class="bub">${esc(t)}</div></div></div>`);scroll()}
+function optHTML(o){const c="chip"+(o.cta?" cta":"");return o.href?`<a class="${c}" href="${esc(o.href)}" target="_blank" rel="noopener">${esc(o.l)}</a>`:`<button class="${c}" data-a="${esc(o.a)}" data-l="${esc(o.l)}">${esc(o.l)}</button>`}
+function addBot(m){
+  let h="";
+  if(m.card){const c=m.card;h+=`<div class="card"><h3>${c.icon} ${esc(c.title)}</h3>${(c.lines||[]).map(l=>`<p>${esc(l)}</p>`).join("")}${c.locs?`<div class="locs">${c.locs.map(l=>`<div class="loc"><span>📍 ${l[0]}</span><em>${l[1]}</em></div>`).join("")}</div>`:""}${c.checks&&c.checks.length?`<ul>${c.checks.map(x=>`<li>${esc(x)}</li>`).join("")}</ul>`:""}</div>`}
+  if(m.text)h+=`<div class="bub">${esc(m.text)}</div>`;
+  if(m.opts)h+=`<div class="opts">${m.opts.map(optHTML).join("")}</div>`;
+  chat.insertAdjacentHTML("beforeend",`<div class="row"><svg class="av"><use href="#zlogo"/></svg><div class="col">${h}</div></div>`);scroll()
+}
+function typing(){chat.insertAdjacentHTML("beforeend",`<div class="row" id="ty"><svg class="av"><use href="#zlogo"/></svg><div class="bub dots" aria-label="Typing"><i></i><i></i><i></i></div></div>`);scroll()}
+async function say(msgs){for(const m of msgs.filter(Boolean)){typing();await wait(550);$("#ty")?.remove();addBot(m)}}
+function addError(retry){
+  $("#ty")?.remove();
+  chat.insertAdjacentHTML("beforeend",`<div class="row"><svg class="av"><use href="#zlogo"/></svg><div class="col"><div class="bub err">Something went wrong. Check your connection and try again.</div><div class="opts"><button class="chip cta" id="retry">Retry</button></div></div></div>`);
+  $("#retry").onclick=e=>{e.target.closest(".row").remove();run(retry)};scroll()
+}
+async function run(job){
+  if(state.busy)return;state.busy=true;
+  try{if(!navigator.onLine)throw new Error("offline");typing();const msgs=await job();$("#ty")?.remove();await say(msgs)}
+  catch(e){addError(job)}
+  state.busy=false
+}
+function sendText(t){t=t.trim();if(!t)return;addUser(t);run(()=>route(t))}
+function sendAction(a,label){addUser(label);run(()=>action(a))}
+
+document.addEventListener("click",e=>{
+  const b=e.target.closest("[data-a]");if(!b)return;
+  const g=b.closest(".opts");if(g)g.classList.add("used");
+  sendAction(b.dataset.a,b.dataset.l)
+});
+$("#f").onsubmit=e=>{e.preventDefault();const i=$("#t");sendText(i.value);i.value=""};
+function reset(){chat.innerHTML="";state.flow=null;state.busy=false;$("#wel").style.display="";$("#strip").style.display="none";body.scrollTo({top:0})}
+$("#reset").onclick=reset;
+$("#min").onclick=()=>{$("#shell").parentElement.style.display="none";$("#fab").style.display="block"};
+$("#fab").onclick=()=>{$("#shell").parentElement.style.display="";$("#fab").style.display="none"};
+
+/* voice input (progressive: hidden if unsupported) */
+const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+if(!SR)$("#mic").style.display="none";
+else $("#mic").onclick=()=>{const r=new SR(),m=$("#mic");r.lang="en-IN";m.classList.add("rec");
+  r.onresult=e=>{$("#t").value=e.results[0][0].transcript};r.onend=()=>{m.classList.remove("rec");$("#t").focus()};r.onerror=()=>m.classList.remove("rec");try{r.start()}catch(_){m.classList.remove("rec")}};
+</script>
+</body>
+</html>

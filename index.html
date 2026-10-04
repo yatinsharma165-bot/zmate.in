@@ -631,15 +631,13 @@ footer{
 </style>
 </head>
 <script type="module" src="firebase.js"></script>
-
 <body>
-
 
 <!-- Ziya: character stays, bubble disappears after 5s -->
 <div id="ziya">
   <div id="bubble" aria-live="polite"><span id="txt"></span><span class="cur"></span></div>
   <!-- CHANGE /  link -->
-  <a class="avatar" href="ziya.html" target="_blank" rel="noopener" aria-label="Chat with Ziya">
+  <a class="avatar" target="_blank" rel="noopener" aria-label="Chat with Ziya">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="Teenage girl chatbot icon">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0a2fff"/><stop offset="1" stop-color="#000000"/></linearGradient>
@@ -1092,9 +1090,10 @@ document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
 (function () {
  
   var CHATBOT_URL  = "index.html";
- /* =================================== */
+ var ZIYA_SELECTOR = "#ziya"; 
 
-  var wrap = document.createElement("div");
+ /* =================================== */
+var wrap = document.createElement("div");
   wrap.id = "zm-wrap";
   wrap.innerHTML = '<iframe title="Zmate Assistant" allow="microphone"></iframe>' +
                    '<button id="zm-close" aria-label="Close chat"></button>';
